@@ -1,18 +1,42 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <Pomodoro />
+    <!-- <div v-for="pomodoro in allPomodoros" :key="pomodoro.id">
+      <h1>Pomodoro : {{ pomodoro.day }}</h1>
+      <div v-for="session in pomodoro.sessions" :key="session.id">
+        {{ session.id }}: {{ session.startTime }} - {{ session.endTime }}
+      </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+// import gql from 'graphql-tag'
+import Pomodoro from '@/components/Pomodoro'
+
+// const ALL_POMODOROS_QUERY = gql`
+//   {
+//     allPomodoros {
+//       day
+//       sessions {
+//         id
+//         task
+//         startTime
+//         endTime
+//       }
+//     }
+//   }
+// `
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld,
+    Pomodoro,
   },
+  // apollo: {
+  //   allPomodoros: {
+  //     query: ALL_POMODOROS_QUERY,
+  //   },
+  // },
 }
 </script>
