@@ -4,6 +4,23 @@
   </div>
 </template>
 
+<script>
+export default {
+  methods: {
+    notifyMe() {
+      if (!('Notification' in window)) {
+        alert('このブラウザはシステム通知をサポートしていません')
+      } else if (Notification.permission === 'default') {
+        Notification.requestPermission()
+      }
+    },
+  },
+  created() {
+    this.notifyMe()
+  },
+}
+</script>
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

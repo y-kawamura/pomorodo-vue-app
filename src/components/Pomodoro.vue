@@ -2,11 +2,11 @@
   <div>
     <div v-if="!isBreak" class="pomodoro-timer">
       <h1>Pomodoro #{{ sessionNumber }}</h1>
-      <PomodoroWorkTimer @done="doneTimer" />
+      <PomodoroWorkTimer @done="donePomodoro" />
     </div>
     <div v-if="isBreak" class="pomodoro-timer">
       <h1>Break Time</h1>
-      <PomodoroBreakTimer :is-long-break="isLongBreak" @done="doneTimer" />
+      <PomodoroBreakTimer :is-long-break="isLongBreak" @done="doneBreak" />
     </div>
 
     <div v-if="todayPomodoro" class="pomodoro-list">
@@ -69,13 +69,15 @@ export default {
     },
   },
   methods: {
-    doneTimer({ startTime, endTime }) {
-      if (!this.isBreak) {
-        this.donePomodoro(startTime, endTime)
-      }
-      this.isBreak = !this.isBreak
+    doneBreak() {
+      new Notification(`休憩時間が終了しました`)
+      this.isBreak = false
     },
-    async donePomodoro(startTime, endTime) {
+    async donePomodoro({ startTime, endTime }) {
+      new Notification(
+        `お疲れ様です。${this.sessionNumber}回目のポモドーロが終了しました`
+      )
+
       await this.$apollo.mutate({
         mutation: ADD_POMODORO_MUTATION,
         variables: {
@@ -91,6 +93,8 @@ export default {
           cache.writeQuery({ query: TODAY_POMODORO_QUERY, data })
         },
       })
+
+      this.isBreak = true
     },
   },
 }
