@@ -57,12 +57,15 @@ export default {
   },
   data() {
     return {
+      todayPomodoro: null,
       isBreak: false,
     }
   },
   computed: {
     isLongBreak() {
-      return this.todayPomodoro.sessions.length % LONG_BREAK_SPAN === 0
+      return this.todayPomodoro
+        ? this.todayPomodoro.sessions.length % LONG_BREAK_SPAN === 0
+        : false
     },
     sessionNumber() {
       return this.todayPomodoro ? this.todayPomodoro.sessions.length + 1 : 1
@@ -88,9 +91,13 @@ export default {
           },
         },
         update: (cache, { data: { addPomodoro } }) => {
-          const data = cache.readQuery({ query: TODAY_POMODORO_QUERY })
-          data.todayPomodoro.sessions.push(addPomodoro)
-          cache.writeQuery({ query: TODAY_POMODORO_QUERY, data })
+          if (!this.todayPomodoro) {
+            this.$apollo.queries.todayPomodoro.refetch()
+          } else {
+            const data = cache.readQuery({ query: TODAY_POMODORO_QUERY })
+            data.todayPomodoro.sessions.push(addPomodoro)
+            cache.writeQuery({ query: TODAY_POMODORO_QUERY, data })
+          }
         },
       })
 
