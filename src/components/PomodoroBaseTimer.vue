@@ -29,9 +29,9 @@
     <div class="pomodoro-timer--button-group">
       <!-- start -->
       <button
-        v-show="!isWorking"
+        v-show="!isWorking || (isWorking && isPause)"
         @click="startTimer"
-        class="pomodoro-timer--button pomodoro-timer--button-red"
+        class="pomodoro-timer--button pomodoro-timer--button-orange"
       >
         Start
       </button>
@@ -43,13 +43,7 @@
       >
         Pause
       </button>
-      <button
-        v-show="isWorking && isPause"
-        @click="restartTimer"
-        class="pomodoro-timer--button pomodoro-timer--button-red"
-      >
-        Restart
-      </button>
+
       <!-- stop -->
       <button
         v-show="!skip"
@@ -130,16 +124,15 @@ export default {
       }, 1000)
     },
     startTimer() {
-      this.startTime = new Date()
+      if (!this.isWorking) {
+        this.startTime = new Date()
+      }
+      this.isPause = false
       this.countDown()
     },
     pauseTimer() {
       clearInterval(this.workTimer)
       this.isPause = true
-    },
-    restartTimer() {
-      this.isPause = false
-      this.countDown()
     },
     cancelTimer() {
       clearInterval(this.workTimer)
@@ -212,30 +205,23 @@ export default {
     outline: none;
     cursor: pointer;
     transition: 600ms ease-in-out;
+    background-color: transparent;
     /* box-shadow: none; */
-  }
-  &--button-red {
-    border: 1px solid #ff6a6a;
-    color: #ff6a6a;
-    &:hover {
-      background-color: #fcd4d4;
-      color: #d84d4d;
-    }
   }
   &--button-orange {
     border: 1px solid #ffa033;
     color: #ffa033;
     &:hover {
-      background-color: #ffd6a8;
-      color: #df831a;
+      background-color: #eeb56b;
+      color: #7e4401;
     }
   }
   &--button-gray {
-    border: 1px solid #867e7e;
-    color: #867e7e;
+    border: 1px solid #c5c0c0;
+    color: #c5c0c0;
     &:hover {
-      background-color: #dbd4d4;
-      color: #726767;
+      background-color: #928d8d;
+      color: #3a3434;
     }
   }
 }
