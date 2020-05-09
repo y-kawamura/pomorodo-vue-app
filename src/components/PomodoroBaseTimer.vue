@@ -201,27 +201,23 @@ export default {
     height: 80px;
     font-size: 1.2rem;
     border-radius: 50%;
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); */
     outline: none;
     cursor: pointer;
-    transition: 600ms ease-in-out;
+    transition: 250ms ease-in-out;
     background-color: transparent;
-    /* box-shadow: none; */
   }
   &--button-orange {
     border: 1px solid #ffa033;
     color: #ffa033;
     &:hover {
-      background-color: #eeb56b;
-      color: #7e4401;
+      background-color: #504e4e;
     }
   }
   &--button-gray {
     border: 1px solid #c5c0c0;
     color: #c5c0c0;
     &:hover {
-      background-color: #928d8d;
-      color: #3a3434;
+      background-color: #504e4e;
     }
   }
 }
