@@ -54,7 +54,6 @@
       <button
         v-show="!skip"
         @click="cancelTimer"
-        disabled
         class="pomodoro-timer--button pomodoro-timer--button-gray"
       >
         Cancel
@@ -102,7 +101,7 @@ export default {
       return ('00' + (this.workTime % 60)).slice(-2)
     },
     isWorking() {
-      return !!this.workTimer
+      return this.workTimer
     },
     circleLength() {
       return 2 * 144 * Math.PI
@@ -144,6 +143,7 @@ export default {
     },
     cancelTimer() {
       clearInterval(this.workTimer)
+      this.workTimer = null
       this.workTime = this.settingTime
     },
     skipTimer() {
@@ -157,7 +157,9 @@ export default {
     // auto start after 2sec
     if (this.autoStart) {
       setTimeout(() => {
-        this.startTimer()
+        if (!this.workTimer) {
+          this.startTimer()
+        }
       }, 2000)
     }
   },
