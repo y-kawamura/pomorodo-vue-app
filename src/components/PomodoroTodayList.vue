@@ -1,12 +1,16 @@
 <template>
   <div>
-    <div v-for="session in sessions" :key="session.id">
-      <span>{{ session.id }}:</span>
-      <span
-        >{{ hourMin(session.startTime) }} -
-        {{ hourMin(session.endTime) }}
-      </span>
-    </div>
+    <table class="pomodoro-list">
+      <tbody>
+        <tr v-for="session in sessions" :key="session.id">
+          <td>{{ session.id }}</td>
+          <td class="time">
+            {{ hourMin(session.startTime) }} - {{ hourMin(session.endTime) }}
+          </td>
+          <td class="task">{{ session.task || '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -19,14 +23,36 @@ export default {
     },
   },
   computed: {
+    zeroPadding() {
+      return num => ('00' + num).slice(-2)
+    },
     hourMin() {
       return dateTime => {
         const time = new Date(dateTime)
-        return `${time.getHours()} : ${time.getMinutes()}`
+        return `
+          ${this.zeroPadding(time.getHours())} : 
+          ${this.zeroPadding(time.getMinutes())}
+        `
       }
     },
   },
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.pomodoro-list {
+  margin: 0 auto;
+
+  .time {
+    width: 120px;
+  }
+
+  td {
+    padding-right: 0.5rem;
+
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+}
+</style>
