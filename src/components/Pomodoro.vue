@@ -9,6 +9,12 @@
       <PomodoroBreakTimer :is-long-break="isLongBreak" @done="doneBreak" />
     </div>
 
+    <!-- task -->
+    <div class="task">
+      <label for="task">Task</label>
+      <input type="text" id="task" v-model="task" />
+    </div>
+
     <div v-if="todayPomodoro" class="pomodoro-list">
       <PomodoroTodayList :sessions="todayPomodoro.sessions" />
     </div>
@@ -28,6 +34,7 @@ const ADD_POMODORO_MUTATION = gql`
       id
       startTime
       endTime
+      task
     }
   }
 `
@@ -39,6 +46,7 @@ const TODAY_POMODORO_QUERY = gql`
         id
         startTime
         endTime
+        task
       }
     }
   }
@@ -57,6 +65,7 @@ export default {
   },
   data() {
     return {
+      task: '',
       todayPomodoro: null,
       isBreak: false,
     }
@@ -88,6 +97,7 @@ export default {
             day: new Date(),
             startTime,
             endTime,
+            task: this.task,
           },
         },
         update: (cache, { data: { addPomodoro } }) => {
@@ -101,6 +111,7 @@ export default {
         },
       })
 
+      this.task = ''
       this.isBreak = true
     },
   },
@@ -108,7 +119,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.task {
+  margin: 0 auto;
+  margin-top: 2rem;
+
+  label {
+    margin-right: 0.5rem;
+  }
+
+  input {
+    border: none;
+    border-bottom: 1px solid #d0d2d4;
+    background-color: transparent;
+    color: #d0d2d4;
+    font-size: 1rem;
+    padding: 0.5rem;
+    outline: none;
+    width: 250px;
+  }
+}
+
 .pomodoro-list {
-  margin-top: 5rem;
+  margin: 0 auto;
+  margin-top: 2rem;
 }
 </style>
